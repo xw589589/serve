@@ -17,7 +17,7 @@ import '../../data/model/app/menu.dart';
 import '../../data/res/ui.dart';
 import '../../data/res/url.dart';
 import '../../data/store/docker.dart';
-import '../../locator.dart';
+import '../../providers.dart';
 import '../widget/popup_menu.dart';
 import '../widget/round_rect_card.dart';
 import '../widget/two_line_text.dart';

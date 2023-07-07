@@ -4,7 +4,7 @@ import 'package:toolbox/core/extension/order.dart';
 import 'package:toolbox/core/utils/ui.dart';
 import 'package:toolbox/data/model/ssh/virtual_key.dart';
 import 'package:toolbox/data/store/setting.dart';
-import 'package:toolbox/locator.dart';
+import 'package:toolbox/providers.dart';
 
 class SSHVirtKeySettingPage extends StatefulWidget {
   const SSHVirtKeySettingPage({Key? key}) : super(key: key);

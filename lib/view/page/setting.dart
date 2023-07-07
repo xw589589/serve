@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_highlight/theme_map.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 import 'package:toolbox/core/extension/locale.dart';
 import 'package:toolbox/core/extension/navigator.dart';
@@ -25,7 +26,7 @@ import '../../data/res/color.dart';
 import '../../data/res/path.dart';
 import '../../data/res/ui.dart';
 import '../../data/store/setting.dart';
-import '../../locator.dart';
+import '../../providers.dart';
 import '../widget/future_widget.dart';
 import '../widget/round_rect_card.dart';
 
@@ -47,48 +48,14 @@ class _SettingPageState extends State<SettingPage> {
   final _keyboardTypeKey = GlobalKey<PopupMenuButtonState<int>>();
   final _rotateQuarterKey = GlobalKey<PopupMenuButtonState<int>>();
 
-  late final SettingStore _setting;
-  late final ServerProvider _serverProvider;
   late MediaQueryData _media;
   late S _s;
-
-  final _selectedColorValue = ValueNotifier(0);
-  final _launchPageIdx = ValueNotifier(0);
-  final _nightMode = ValueNotifier(0);
-  final _maxRetryCount = ValueNotifier(0);
-  final _updateInterval = ValueNotifier(0);
-  final _fontSize = ValueNotifier(0.0);
-  final _localeCode = ValueNotifier('');
-  final _editorTheme = ValueNotifier('');
-  final _editorDarkTheme = ValueNotifier('');
-  final _keyboardType = ValueNotifier(0);
-  final _rotateQuarter = ValueNotifier(0);
-
-  final _pushToken = ValueNotifier<String?>(null);
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _media = MediaQuery.of(context);
     _s = S.of(context)!;
-    _localeCode.value = _setting.locale.fetch() ?? _s.localeName;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _serverProvider = locator<ServerProvider>();
-    _setting = locator<SettingStore>();
-    _launchPageIdx.value = _setting.launchPage.fetch()!;
-    _nightMode.value = _setting.themeMode.fetch()!;
-    _updateInterval.value = _setting.serverStatusUpdateInterval.fetch()!;
-    _maxRetryCount.value = _setting.maxRetryCount.fetch()!;
-    _selectedColorValue.value = _setting.primaryColor.fetch()!;
-    _fontSize.value = _setting.termFontSize.fetch()!;
-    _editorTheme.value = _setting.editorTheme.fetch()!;
-    _editorDarkTheme.value = _setting.editorDarkTheme.fetch()!;
-    _keyboardType.value = _setting.keyboardType.fetch()!;
-    _rotateQuarter.value = _setting.fullScreenRotateQuarter.fetch()!;
   }
 
   @override
@@ -189,9 +156,10 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildCheckUpdate() {
-    return Consumer<AppProvider>(
-      builder: (ctx, app, __) {
+    return Consumer(
+      builder: (ctx, ref, __) {
         String display;
+        final app = ref.read(appProviderProvider);
         if (app.newestBuild != null) {
           if (app.newestBuild! > BuildData.build) {
             display = _s.versionHaveUpdate(app.newestBuild!);
@@ -222,6 +190,8 @@ class _SettingPageState extends State<SettingPage> {
       growable: false,
     ).toList();
 
+    final _updateInterval = settingStore.serverStatusUpdateInterval.fetch()!;
+
     return ListTile(
       title: Text(
         _s.updateServerStatusInterval,
@@ -233,12 +203,12 @@ class _SettingPageState extends State<SettingPage> {
       onTap: () {
         _updateIntervalKey.currentState?.showButtonMenu();
       },
-      trailing: ValueBuilder(
-        listenable: _updateInterval,
-        build: () => PopupMenuButton(
+      trailing: Consumer(builder: (ctx, ref, _) {
+        final setting = ref.watch(settingProvider);
+        return PopupMenuButton(
           key: _updateIntervalKey,
           itemBuilder: (_) => items,
-          initialValue: _updateInterval.value,
+          initialValue: _updateInterval,
           onSelected: (int val) {
             _updateInterval.value = val;
             _setting.serverStatusUpdateInterval.put(val);
@@ -251,8 +221,8 @@ class _SettingPageState extends State<SettingPage> {
             '${_updateInterval.value} ${_s.second}',
             style: textSize15,
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 

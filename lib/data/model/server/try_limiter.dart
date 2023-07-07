@@ -1,11 +1,11 @@
-import '../../../locator.dart';
+import '../../../providers.dart';
 import '../../store/setting.dart';
 
 class TryLimiter {
   final Map<String, int> _triedTimes = {};
 
   bool shouldTry(String id) {
-    final maxCount = locator<SettingStore>().maxRetryCount.fetch()!;
+    final maxCount = settingStore.maxRetryCount.fetch()!;
     if (maxCount <= 0) {
       return true;
     }

@@ -20,6 +20,7 @@ enum CmdType {
   tempVal,
   host,
   sysRhel,
+  battery,
 }
 
 const _cmdList = [
@@ -35,6 +36,7 @@ const _cmdList = [
   'cat /sys/class/thermal/thermal_zone*/temp',
   'hostname',
   'cat /etc/redhat-release',
+  r'for i in /sys/class/power_supply/*; echo $i; cat $i/uevent',
 ];
 
 final shellFuncStatus = AppShellFunc(

@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logging/logging.dart';
-import 'package:provider/provider.dart';
 import 'package:toolbox/data/model/ssh/virtual_key.dart';
+import 'package:toolbox/providers.dart';
 
 import 'app.dart';
 import 'core/analysis.dart';
@@ -12,46 +13,22 @@ import 'core/utils/ui.dart';
 import 'data/model/server/private_key_info.dart';
 import 'data/model/server/server_private_info.dart';
 import 'data/model/server/snippet.dart';
-import 'data/provider/app.dart';
 import 'data/provider/debug.dart';
-import 'data/provider/docker.dart';
-import 'data/provider/pkg.dart';
-import 'data/provider/private_key.dart';
-import 'data/provider/server.dart';
-import 'data/provider/sftp.dart';
-import 'data/provider/snippet.dart';
-import 'data/provider/virtual_keyboard.dart';
-import 'data/store/setting.dart';
-import 'locator.dart';
 import 'view/widget/rebuild.dart';
 
-late final DebugProvider _debug;
+DebugProvider? _debug;
 
-Future<void> initApp() async {
-  await initHive();
-  await setupLocator();
-
-  _debug = locator<DebugProvider>();
-  locator<SnippetProvider>().loadData();
-  locator<PrivateKeyProvider>().loadData();
-
-  final settings = locator<SettingStore>();
-  await loadFontFile(settings.fontPath.fetch());
-
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((record) {
-    // ignore: avoid_print
-    print('[${record.loggerName}][${record.level.name}]: ${record.message}');
+Future<void> main() async {
+  runInZone(() async {
+    await _initApp();
+    runApp(
+      ProviderScope(
+        child: RebuildWidget(
+          child: MyApp(),
+        ),
+      ),
+    );
   });
-}
-
-Future<void> initHive() async {
-  await Hive.initFlutter();
-  // 以 typeId 为顺序
-  Hive.registerAdapter(PrivateKeyInfoAdapter());
-  Hive.registerAdapter(SnippetAdapter());
-  Hive.registerAdapter(ServerPrivateInfoAdapter());
-  Hive.registerAdapter(VirtKeyAdapter());
 }
 
 void runInZone(dynamic Function() body) {
@@ -62,7 +39,7 @@ void runInZone(dynamic Function() body) {
       // `setState() or markNeedsBuild() called during build`
       // error.
       Future.delayed(const Duration(milliseconds: 1), () {
-        _debug.addText(line);
+        _debug?.addText(line);
       });
     },
   );
@@ -76,30 +53,36 @@ void runInZone(dynamic Function() body) {
 
 void onError(Object obj, StackTrace stack) {
   Analysis.recordException(obj);
-  _debug.addMultiline(obj, Colors.red);
-  _debug.addMultiline(stack, Colors.white);
+  _debug?.addMultiline(obj, Colors.red);
+  _debug?.addMultiline(stack, Colors.white);
 }
 
-Future<void> main() async {
-  runInZone(() async {
-    await initApp();
-    runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => locator<AppProvider>()),
-          ChangeNotifierProvider(create: (_) => locator<PkgProvider>()),
-          ChangeNotifierProvider(create: (_) => locator<DebugProvider>()),
-          ChangeNotifierProvider(create: (_) => locator<DockerProvider>()),
-          ChangeNotifierProvider(create: (_) => locator<ServerProvider>()),
-          ChangeNotifierProvider(create: (_) => locator<SnippetProvider>()),
-          ChangeNotifierProvider(create: (_) => locator<VirtualKeyboard>()),
-          ChangeNotifierProvider(create: (_) => locator<PrivateKeyProvider>()),
-          ChangeNotifierProvider(create: (_) => locator<SftpProvider>()),
-        ],
-        child: RebuildWidget(
-          child: MyApp(),
-        ),
-      ),
-    );
+Future<void> _initApp() async {
+  await _initHive();
+  await _setupStore();
+
+  await loadFontFile(settingStore.fontPath.fetch());
+
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((record) {
+    // ignore: avoid_print
+    print('[${record.loggerName}][${record.level.name}]: ${record.message}');
   });
+}
+
+Future<void> _initHive() async {
+  await Hive.initFlutter();
+  // 以 typeId 为顺序
+  Hive.registerAdapter(PrivateKeyInfoAdapter());
+  Hive.registerAdapter(SnippetAdapter());
+  Hive.registerAdapter(ServerPrivateInfoAdapter());
+  Hive.registerAdapter(VirtKeyAdapter());
+}
+
+Future<void> _setupStore() async {
+  await settingStore.init(boxName: 'setting');
+  await serverStore.init(boxName: 'server');
+  await privateKeyStore.init(boxName: 'key');
+  await snippetStore.init(boxName: 'snippet');
+  await dockerStore.init(boxName: 'docker');
 }

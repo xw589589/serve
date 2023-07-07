@@ -12,7 +12,7 @@ import 'package:toolbox/view/widget/round_rect_card.dart';
 import 'package:toolbox/view/widget/two_line_text.dart';
 
 import '../../data/provider/server.dart';
-import '../../locator.dart';
+import '../../providers.dart';
 
 class ProcessPage extends StatefulWidget {
   final ServerPrivateInfo spi;

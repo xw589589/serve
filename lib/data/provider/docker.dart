@@ -3,15 +3,18 @@ import 'dart:typed_data';
 
 import 'package:dartssh2/dartssh2.dart';
 import 'package:logging/logging.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:toolbox/core/extension/ssh_client.dart';
 import 'package:toolbox/core/extension/stringx.dart';
 import 'package:toolbox/core/extension/uint8list.dart';
-import 'package:toolbox/core/provider_base.dart';
 import 'package:toolbox/data/model/docker/image.dart';
 import 'package:toolbox/data/model/docker/ps.dart';
 import 'package:toolbox/data/model/app/error.dart';
 import 'package:toolbox/data/store/docker.dart';
-import 'package:toolbox/locator.dart';
+
+import '../../providers.dart' show dockerStoreProvider;
+
+part 'docker.g.dart';
 
 final _dockerNotFound = RegExp(r'command not found|Unknown command');
 final _versionReg = RegExp(r'(Version:)\s+([0-9]+\.[0-9]+\.[0-9]+)');
@@ -23,8 +26,13 @@ const _dockerImgs = 'docker images';
 
 final _logger = Logger('DOCKER');
 
-class DockerProvider extends BusyProvider {
-  final dockerStore = locator<DockerStore>();
+@riverpod
+class DockerProvider extends _$DockerProvider {
+  @override
+  DockerProvider build() =>
+      DockerProvider()..dockerStore = ref.read(dockerStoreProvider);
+
+  late DockerStore dockerStore;
 
   SSHClient? client;
   String? userName;
@@ -38,6 +46,8 @@ class DockerProvider extends BusyProvider {
   String? runLog;
   bool isRequestingPwd = false;
 
+  bool isBusy = false;
+
   void init(SSHClient client, String userName, PwdRequestFunc onPwdReq,
       String hostId) {
     this.client = client;
@@ -48,7 +58,7 @@ class DockerProvider extends BusyProvider {
 
   void clear() {
     client = userName = error = items = version = edition = onPwdReq = null;
-    isRequestingPwd = false;
+    isRequestingPwd = isBusy = false;
     hostId = runLog = images = null;
   }
 
@@ -57,7 +67,7 @@ class DockerProvider extends BusyProvider {
     final verRaw = await client!.run('docker version'.withLangExport).string;
     if (verRaw.contains(_dockerNotFound)) {
       error = DockerErr(type: DockerErrType.notInstalled);
-      setBusyState(false);
+      isBusy = false;
       return;
     }
 
@@ -69,7 +79,7 @@ class DockerProvider extends BusyProvider {
     }
 
     try {
-      setBusyState();
+      isBusy = true;
       final cmd = _wrap(_dockerPS);
 
       // run docker ps
@@ -102,7 +112,7 @@ class DockerProvider extends BusyProvider {
       error = DockerErr(type: DockerErrType.unknown, message: e.toString());
       rethrow;
     } finally {
-      setBusyState(false);
+      isBusy = false;
     }
   }
 
@@ -134,7 +144,7 @@ class DockerProvider extends BusyProvider {
     if (!cmd.startsWith(_dockerPrefixReg)) {
       return DockerErr(type: DockerErrType.cmdNoPrefix);
     }
-    setBusyState();
+    isBusy = true;
 
     runLog = '';
     final errs = <String>[];
@@ -146,20 +156,19 @@ class DockerProvider extends BusyProvider {
       },
       onStdout: (data, _) {
         runLog = '$runLog$data';
-        notifyListeners();
       },
     );
     runLog = null;
 
     if (code != 0) {
-      setBusyState(false);
+      isBusy = false;
       return DockerErr(
         type: DockerErrType.unknown,
         message: errs.join('\n').trim(),
       );
     }
     await refresh();
-    setBusyState(false);
+    isBusy = false;
     return null;
   }
 

@@ -32,3 +32,5 @@ class ServerStore extends PersistentStore {
 
   bool have(ServerPrivateInfo s) => box.get(s.id) != null;
 }
+
+final serverStore = ServerStore();

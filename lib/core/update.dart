@@ -12,7 +12,7 @@ import 'package:toolbox/data/res/path.dart';
 import '../data/provider/app.dart';
 import '../data/res/build_data.dart';
 import '../data/service/app.dart';
-import '../locator.dart';
+import '../providers.dart';
 import 'utils/platform.dart';
 import 'utils/ui.dart';
 

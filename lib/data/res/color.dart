@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toolbox/data/store/setting.dart';
-import 'package:toolbox/locator.dart';
+import 'package:toolbox/providers.dart';
 
 import '../model/app/dynamic_color.dart';
 

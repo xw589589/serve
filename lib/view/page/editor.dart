@@ -13,7 +13,7 @@ import 'package:toolbox/core/utils/misc.dart';
 import 'package:toolbox/core/utils/ui.dart';
 import 'package:toolbox/data/res/highlight.dart';
 import 'package:toolbox/data/store/setting.dart';
-import 'package:toolbox/locator.dart';
+import 'package:toolbox/providers.dart';
 
 import '../widget/two_line_text.dart';
 

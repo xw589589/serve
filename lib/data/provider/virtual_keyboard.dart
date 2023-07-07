@@ -1,10 +1,15 @@
 import 'package:flutter/widgets.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:toolbox/data/store/setting.dart';
-import 'package:toolbox/locator.dart';
+import 'package:toolbox/providers.dart';
 import 'package:xterm/core.dart';
 
-class VirtualKeyboard extends TerminalInputHandler with ChangeNotifier {
-  VirtualKeyboard();
+part 'virtual_keyboard.g.dart';
+
+@riverpod
+class VirtualKeyboard extends TerminalInputHandler with _$VirtualKeyboard {
+  @override
+  VirtualKeyboard build() => VirtualKeyboard();
 
   bool _ctrl = false;
   bool get ctrl => _ctrl;

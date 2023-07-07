@@ -2,12 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/extension/order.dart';
 import '../../core/extension/uint8list.dart';
 import '../../core/provider_base.dart';
 import '../../core/utils/server.dart';
-import '../../locator.dart';
+import '../../providers.dart';
 import '../model/server/server.dart';
 import '../model/server/server_private_info.dart';
 import '../model/server/server_status_update_req.dart';
@@ -18,9 +19,15 @@ import '../res/status.dart';
 import '../store/server.dart';
 import '../store/setting.dart';
 
+part 'server.g.dart';
+
 typedef ServersMap = Map<String, Server>;
 
-class ServerProvider extends BusyProvider {
+@riverpod
+class ServerProvider extends _$ServerProvider {
+  @override
+  ServerProvider build() => ServerProvider();
+
   final ServersMap _servers = {};
   ServersMap get servers => _servers;
   final Order<String> _serverOrder = [];

@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/model/server/snippet.dart';
 import '../../data/provider/snippet.dart';
-import '../../locator.dart';
+import '../../providers.dart';
 import '../../view/page/snippet/edit.dart';
 import '../../view/widget/picker.dart';
 import '../persistant_store.dart';

@@ -12,7 +12,7 @@ import '../../data/model/server/server_private_info.dart';
 import '../../data/provider/pkg.dart';
 import '../../data/provider/server.dart';
 import '../../data/res/ui.dart';
-import '../../locator.dart';
+import '../../providers.dart';
 import '../widget/round_rect_card.dart';
 import '../widget/two_line_text.dart';
 

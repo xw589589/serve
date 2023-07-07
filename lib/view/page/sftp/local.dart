@@ -7,7 +7,7 @@ import 'package:toolbox/data/model/sftp/req.dart';
 import 'package:toolbox/data/provider/server.dart';
 import 'package:toolbox/data/provider/sftp.dart';
 import 'package:toolbox/data/res/misc.dart';
-import 'package:toolbox/locator.dart';
+import 'package:toolbox/providers.dart';
 import 'package:toolbox/view/page/editor.dart';
 import 'package:toolbox/view/page/sftp/remote.dart';
 import 'package:toolbox/view/widget/input_field.dart';

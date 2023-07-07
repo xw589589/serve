@@ -27,3 +27,5 @@ class PrivateKeyStore extends PersistentStore {
     box.delete(s.id);
   }
 }
+
+final privateKeyStore = PrivateKeyStore();

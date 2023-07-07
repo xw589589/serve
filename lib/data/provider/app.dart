@@ -1,6 +1,12 @@
-import 'package:toolbox/core/provider_base.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class AppProvider extends BusyProvider {
+part 'app.g.dart';
+
+@riverpod
+class AppProvider extends _$AppProvider {
+  @override
+  AppProvider build() => AppProvider();
+
   int? _newestBuild;
   int? get newestBuild => _newestBuild;
 
@@ -9,7 +15,6 @@ class AppProvider extends BusyProvider {
 
   void setNewestBuild(int build) {
     _newestBuild = build;
-    notifyListeners();
   }
 
   void setCanMoveBg(bool moveBg) {

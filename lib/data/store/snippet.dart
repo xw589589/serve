@@ -22,3 +22,5 @@ class SnippetStore extends PersistentStore {
     box.delete(s.name);
   }
 }
+
+final snippetStore = SnippetStore();

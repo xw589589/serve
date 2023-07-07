@@ -26,7 +26,7 @@ import '../../../data/provider/server.dart';
 import '../../../data/provider/sftp.dart';
 import '../../../data/res/path.dart';
 import '../../../data/res/ui.dart';
-import '../../../locator.dart';
+import '../../../providers.dart';
 import '../../widget/fade_in.dart';
 import '../../widget/input_field.dart';
 import '../../widget/two_line_text.dart';

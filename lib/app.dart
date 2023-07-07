@@ -7,7 +7,6 @@ import 'core/utils/ui.dart';
 import 'data/res/build_data.dart';
 import 'data/res/color.dart';
 import 'data/store/setting.dart';
-import 'locator.dart';
 import 'view/page/home.dart';
 
 class MyApp extends StatelessWidget {

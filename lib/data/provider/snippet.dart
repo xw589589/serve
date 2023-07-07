@@ -1,11 +1,18 @@
 import 'dart:convert';
 
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:toolbox/core/provider_base.dart';
 import 'package:toolbox/data/model/server/snippet.dart';
 import 'package:toolbox/data/store/snippet.dart';
-import 'package:toolbox/locator.dart';
+import 'package:toolbox/providers.dart';
 
-class SnippetProvider extends BusyProvider {
+part 'snippet.g.dart';
+
+@riverpod
+class SnippetProvider extends _$SnippetProvider {
+  @override
+  SnippetProvider build() => SnippetProvider()..loadData();
+
   List<Snippet> get snippets => _snippets;
   final _store = locator<SnippetStore>();
   late List<Snippet> _snippets;

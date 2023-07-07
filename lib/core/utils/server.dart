@@ -6,7 +6,7 @@ import 'package:toolbox/data/model/app/error.dart';
 
 import '../../data/model/server/server_private_info.dart';
 import '../../data/store/private_key.dart';
-import '../../locator.dart';
+import '../../providers.dart';
 
 /// Must put this func out of any Class.
 ///

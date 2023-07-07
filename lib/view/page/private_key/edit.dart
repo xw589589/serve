@@ -17,7 +17,7 @@ import '../../../core/utils/ui.dart';
 import '../../../data/model/server/private_key_info.dart';
 import '../../../data/provider/private_key.dart';
 import '../../../data/res/ui.dart';
-import '../../../locator.dart';
+import '../../../providers.dart';
 
 const _format = 'text/plain';
 

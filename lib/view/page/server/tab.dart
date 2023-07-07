@@ -20,7 +20,7 @@ import '../../../data/res/color.dart';
 import '../../../data/model/app/menu.dart';
 import '../../../data/res/ui.dart';
 import '../../../data/store/setting.dart';
-import '../../../locator.dart';
+import '../../../providers.dart';
 import '../../widget/popup_menu.dart';
 import '../../widget/round_rect_card.dart';
 import '../docker.dart';

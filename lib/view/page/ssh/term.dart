@@ -22,7 +22,7 @@ import '../../../data/provider/virtual_keyboard.dart';
 import '../../../data/res/color.dart';
 import '../../../data/res/terminal.dart';
 import '../../../data/store/setting.dart';
-import '../../../locator.dart';
+import '../../../providers.dart';
 import '../sftp/remote.dart';
 
 class SSHPage extends StatefulWidget {

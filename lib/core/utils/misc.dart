@@ -8,7 +8,7 @@ import 'package:plain_notification_token/plain_notification_token.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../data/provider/app.dart';
-import '../../locator.dart';
+import '../../providers.dart';
 import '../../view/widget/rebuild.dart';
 import 'platform.dart';
 

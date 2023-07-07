@@ -12,7 +12,7 @@ import 'package:toolbox/core/route.dart';
 import 'package:toolbox/data/provider/server.dart';
 import 'package:toolbox/data/res/ui.dart';
 import 'package:toolbox/data/store/setting.dart';
-import 'package:toolbox/locator.dart';
+import 'package:toolbox/providers.dart';
 
 import '../../core/analysis.dart';
 import '../../core/update.dart';

@@ -17,7 +17,7 @@ import '../../../data/res/color.dart';
 import '../../../data/res/default.dart';
 import '../../../data/res/ui.dart';
 import '../../../data/store/setting.dart';
-import '../../../locator.dart';
+import '../../../providers.dart';
 import '../../widget/round_rect_card.dart';
 
 class ServerDetailPage extends StatefulWidget {

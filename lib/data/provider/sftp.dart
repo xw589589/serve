@@ -1,10 +1,17 @@
 import 'dart:async';
 
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:toolbox/core/provider_base.dart';
 
 import '../model/sftp/req.dart';
 
-class SftpProvider extends ProviderBase {
+part 'sftp.g.dart';
+
+@riverpod
+class SftpProvider extends _$SftpProvider {
+  @override
+  SftpProvider build() => SftpProvider();
+
   final List<SftpReqStatus> _status = [];
   List<SftpReqStatus> get status => _status;
 

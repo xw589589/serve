@@ -13,3 +13,5 @@ class DockerStore extends PersistentStore {
     return box.toMap().cast<String, String>();
   }
 }
+
+final dockerStore = DockerStore();

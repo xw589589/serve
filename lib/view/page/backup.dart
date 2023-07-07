@@ -18,7 +18,7 @@ import '../../data/store/docker.dart';
 import '../../data/store/private_key.dart';
 import '../../data/store/server.dart';
 import '../../data/store/snippet.dart';
-import '../../locator.dart';
+import '../../providers.dart';
 
 const backupFormatVersion = 1;
 

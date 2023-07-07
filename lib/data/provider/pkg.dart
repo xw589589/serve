@@ -3,15 +3,21 @@ import 'dart:typed_data';
 
 import 'package:dartssh2/dartssh2.dart';
 import 'package:logging/logging.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:toolbox/core/extension/ssh_client.dart';
 import 'package:toolbox/core/extension/stringx.dart';
 import 'package:toolbox/core/extension/uint8list.dart';
-import 'package:toolbox/core/provider_base.dart';
 import 'package:toolbox/data/model/pkg/manager.dart';
 import 'package:toolbox/data/model/pkg/upgrade_info.dart';
 import 'package:toolbox/data/model/server/dist.dart';
 
-class PkgProvider extends BusyProvider {
+part 'pkg.g.dart';
+
+@riverpod
+class PkgProvider extends _$PkgProvider {
+  @override
+  PkgProvider build() => PkgProvider();
+
   final logger = Logger('PKG');
 
   SSHClient? client;

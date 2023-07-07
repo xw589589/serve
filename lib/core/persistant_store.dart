@@ -2,11 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class PersistentStore<E> {
-  late Box<E> box;
+part 'persistent_store.g.dart';
 
-  Future<PersistentStore<E>> init({String boxName = 'defaultBox'}) async {
+@riverpod
+class PersistentStore extends _$PersistentStore {
+  late Box box;
+
+  @override
+  PersistentStore build() => PersistentStore();
+
+  Future<PersistentStore> init({String boxName = 'defaultBox'}) async {
     box = await Hive.openBox(boxName);
     return this;
   }

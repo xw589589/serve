@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:toolbox/data/res/ui.dart';
 
 import '../../data/res/misc.dart';
+
+part 'debug.g.dart';
 
 /// format: [NAME][LEVEL]: MESSAGE
 final _headReg = RegExp(r'(\[[A-Za-z]+\])(\[[A-Z]+\]): (.*)');
@@ -10,7 +13,11 @@ const _level2Color = {
   '[WARNING]': Colors.yellow,
 };
 
-class DebugProvider extends ChangeNotifier {
+@riverpod
+class DebugProvider extends _$DebugProvider {
+  @override
+  DebugProvider build() => DebugProvider();
+
   final widgets = <Widget>[];
 
   void addText(String text) {
@@ -56,11 +63,9 @@ class DebugProvider extends ChangeNotifier {
     if (widgets.length > maxDebugLogLines) {
       widgets.removeRange(0, widgets.length - maxDebugLogLines);
     }
-    notifyListeners();
   }
 
   void clear() {
     widgets.clear();
-    notifyListeners();
   }
 }

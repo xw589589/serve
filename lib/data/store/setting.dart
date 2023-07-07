@@ -87,3 +87,6 @@ class SettingStore extends PersistentStore {
   StoreProperty<List<VirtKey>> get sshVirtKeys =>
       property('sshVirtKeys', defaultValue: defaultSSHVirtKeys);
 }
+
+final settingStore = SettingStore();
+

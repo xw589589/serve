@@ -18,7 +18,7 @@ import '../../data/res/build_data.dart';
 import '../../data/res/ui.dart';
 import '../../data/res/url.dart';
 import '../../data/store/setting.dart';
-import '../../locator.dart';
+import '../../providers.dart';
 import '../widget/url_text.dart';
 import 'backup.dart';
 import 'convert.dart';
