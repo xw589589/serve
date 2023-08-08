@@ -86,11 +86,11 @@ class _PrivateKeyListState extends State<PrivateKeysListPage> {
     );
   }
 
-  void autoAddSystemPriavteKey() {
+  Future<void> autoAddSystemPriavteKey() async {
     final store = locator<PrivateKeyStore>();
     // Only trigger on desktop platform and no private key saved
     if (isDesktop && store.box.keys.isEmpty) {
-      final home = getHomeDir();
+      final home = await getHomeDir();
       if (home == null) return;
       final idRsaFile = File(pathJoin(home, '.ssh/id_rsa'));
       if (!idRsaFile.existsSync()) return;
@@ -112,10 +112,6 @@ class _PrivateKeyListState extends State<PrivateKeysListPage> {
               ).go(context);
             },
             child: Text(_s.ok),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(_s.cancel),
           ),
         ],
       );

@@ -62,12 +62,17 @@ bool get isDesktop =>
 
 /// Available only on desktop,
 /// return null on mobile
-String? getHomeDir() {
-  final envVars = Platform.environment;
-  if (isMacOS || isLinux) {
-    return envVars['HOME'];
-  } else if (isWindows) {
-    return envVars['UserProfile'];
+/// Because of macOS's application container, this function
+/// will return null on macOS
+Future<String?> getHomeDir() async {
+  switch (Platform.operatingSystem) {
+    case 'fuchsia':
+    case 'linux':
+      final env = Platform.environment;
+      return env['HOME'];
+    case 'windows':
+      final env = Platform.environment;
+      return env['UserProfile'];
   }
   return null;
 }
